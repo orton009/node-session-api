@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const port = 3000;
+const port = 4000;
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const axios = require("axios");
@@ -100,7 +100,7 @@ app.post("/session", (req, res) => {
   const body = req.body;
   const options = {
     method: "POST",
-    url: "https://sandbox.juspay.in/orders",
+    url: "https://integ-expresscheckout-api.juspay.in/orders",
     headers: {
       accept: "application/json",
       "content-type": "application/x-www-form-urlencoded",
@@ -134,7 +134,7 @@ app.post("/session", (req, res) => {
           address: r.address,
           timestamp: new Date().getTime(),
           amount: r.amount,
-          cardNumber: r.cardNumber,
+          cardNumber: body.cardNumber,
           orderDetails: JSON.stringify(body),
         },
       };
