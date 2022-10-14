@@ -97,6 +97,7 @@ app.post("/session", (req, res) => {
     ...req.body,
     "options.get_client_auth_token": true,
   };
+  req.body.merchant_id = req.headers["x-merchantid"];
   const body = req.body;
   const options = {
     method: "POST",
@@ -116,12 +117,13 @@ app.post("/session", (req, res) => {
     .then(function (response) {
       const r = response.data;
       console.log("response from server", response.data);
-      const sdkPayload = {
+      const sdk_payload = {
         requestId: uuid(),
         service: "com.juspay.gemi",
         payload: {
           clientId: body.payment_page_client_id,
           merchantId: r.merchant_id,
+          apiAuthToken: authorization,
           clientAuthToken: r.juspay.client_auth_token,
           clientAuthTokenExpiry: r.juspay.client_auth_token_expiry,
           environment: "sandbox",
@@ -131,14 +133,17 @@ app.post("/session", (req, res) => {
           customerPhone: r.customer_phone,
           customerEmail: r.customer_email,
           orderId: r.order_id,
-          address: r.address,
-          timestamp: new Date().getTime(),
+          address: body.address,
+          timestamp: body.timestamp,
+          firstName : body.first_name,
+          lastName : body.last_name,
+          returnUrl : body.return_url,
           amount: r.amount,
           cardNumber: body.cardNumber,
           orderDetails: JSON.stringify(body),
         },
       };
-      res.json({ ...r, sdkPayload });
+      res.json({ ...r, sdk_payload });
     })
     .catch(function (error) {
       console.error(error);
