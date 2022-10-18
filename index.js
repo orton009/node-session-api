@@ -126,7 +126,7 @@ app.post("/session", (req, res) => {
           apiAuthToken: authorization,
           clientAuthToken: r.juspay.client_auth_token,
           clientAuthTokenExpiry: r.juspay.client_auth_token_expiry,
-          environment: "sandbox",
+          environment: "integ",
           action: body.action,
           customerId: r.customer_id,
           currency: r.currency,
