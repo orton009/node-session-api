@@ -123,7 +123,6 @@ app.post("/session", (req, res) => {
         payload: {
           clientId: body.payment_page_client_id,
           merchantId: r.merchant_id,
-          apiAuthToken: authorization,
           clientAuthToken: r.juspay.client_auth_token,
           clientAuthTokenExpiry: r.juspay.client_auth_token_expiry,
           environment: "integ",
