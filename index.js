@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const port = 3000;
+const port = 4000;
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const axios = require("axios");
@@ -97,10 +97,11 @@ app.post("/session", (req, res) => {
     ...req.body,
     "options.get_client_auth_token": true,
   };
+  req.body.merchant_id = req.headers["x-merchantid"];
   const body = req.body;
   const options = {
     method: "POST",
-    url: "https://sandbox.juspay.in/orders",
+    url: "https://integ-expresscheckout-api.juspay.in/orders",
     headers: {
       accept: "application/json",
       "content-type": "application/x-www-form-urlencoded",
@@ -116,7 +117,7 @@ app.post("/session", (req, res) => {
     .then(function (response) {
       const r = response.data;
       console.log("response from server", response.data);
-      const sdkPayload = {
+      const sdk_payload = {
         requestId: uuid(),
         service: "com.juspay.gemi",
         payload: {
@@ -124,21 +125,24 @@ app.post("/session", (req, res) => {
           merchantId: r.merchant_id,
           clientAuthToken: r.juspay.client_auth_token,
           clientAuthTokenExpiry: r.juspay.client_auth_token_expiry,
-          environment: "sandbox",
+          environment: "integ",
           action: body.action,
           customerId: r.customer_id,
           currency: r.currency,
           customerPhone: r.customer_phone,
           customerEmail: r.customer_email,
           orderId: r.order_id,
-          address: r.address,
-          timestamp: new Date().getTime(),
+          address: body.address,
+          timestamp: body.timestamp,
+          firstName : body.first_name,
+          lastName : body.last_name,
+          returnUrl : body.return_url,
           amount: r.amount,
-          cardNumber: r.cardNumber,
+          cardNumber: body.cardNumber,
           orderDetails: JSON.stringify(body),
         },
       };
-      res.json({ ...r, sdkPayload });
+      res.json({ ...r, sdk_payload });
     })
     .catch(function (error) {
       console.error(error);
