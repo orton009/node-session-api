@@ -101,7 +101,7 @@ app.post("/session", (req, res) => {
   const body = req.body;
   const options = {
     method: "POST",
-    url: "https://integ-expresscheckout-api.juspay.in/orders",
+    url: "https://sandbox.juspay.in/orders",
     headers: {
       accept: "application/json",
       "content-type": "application/x-www-form-urlencoded",
@@ -125,7 +125,7 @@ app.post("/session", (req, res) => {
           merchantId: r.merchant_id,
           clientAuthToken: r.juspay.client_auth_token,
           clientAuthTokenExpiry: r.juspay.client_auth_token_expiry,
-          environment: "integ",
+          environment: "sandbox",
           action: body.action,
           customerId: r.customer_id,
           currency: r.currency,
