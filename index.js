@@ -138,6 +138,7 @@ app.post("/session", (req, res) => {
           lastName : body.last_name,
           returnUrl : body.return_url,
           amount: r.amount,
+          expiryDate: body.expiryDate,
           cardNumber: body.cardNumber,
           orderDetails: JSON.stringify(body),
         },
